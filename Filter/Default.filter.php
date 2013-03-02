@@ -50,15 +50,15 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
 {
     protected $sDescription = 'Default Filter for PHP_Beautifier';
     /**
-     * __call 
-     * 
+     * __call
+     *
      * @param mixed $sMethod Method name
      * @param mixed $aArgs   Method arguments
      *
      * @access protected
      * @return void
      */
-    function __call($sMethod, $aArgs) 
+    function __call($sMethod, $aArgs)
     {
         if (!is_array($aArgs) or count($aArgs) != 1) {
             throw (new Exception('Call to Filter::__call with wrong argument'));
@@ -68,48 +68,48 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
     }
     // Bypass the function!
     /**
-     * off 
+     * off
      *
      * @access public
      * @return void
      */
-    public function off() 
+    public function off()
     {
     }
     /**
-     * t_access 
-     * 
+     * t_access
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    public function t_access($sTag) 
+    public function t_access($sTag)
     {
         $this->oBeaut->add($sTag . ' ');
     }
     /**
-     * t_end_heredoc 
-     * 
+     * t_end_heredoc
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    public function t_end_heredoc($sTag) 
+    public function t_end_heredoc($sTag)
     {
         $this->oBeaut->add(trim($sTag));
         $this->oBeaut->addNewLineIndent();
     }
     /**
-     * t_open_tag 
-     * 
+     * t_open_tag
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    public function t_open_tag($sTag) 
+    public function t_open_tag($sTag)
     {
         $this->oBeaut->add(trim($sTag));
         preg_match("/([\s\r\n\t]+)$/", $sTag, $aMatch);
@@ -123,14 +123,14 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_close_tag 
-     * 
+     * t_close_tag
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_close_tag($sTag) 
+    function t_close_tag($sTag)
     {
         $this->oBeaut->removeWhitespace();
         if (preg_match("/\r|\n/", $this->oBeaut->getPreviousWhitespace())) {
@@ -141,67 +141,67 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_switch 
-     * 
+     * t_switch
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_switch($sTag) 
+    function t_switch($sTag)
     {
         $this->t_control($sTag);
     }
     /**
-     * t_control 
-     * 
+     * t_control
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_control($sTag) 
+    function t_control($sTag)
     {
         $this->oBeaut->add($sTag . ' ');
     }
     /**
-     * t_case 
-     * 
+     * t_case
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_case($sTag) 
+    function t_case($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->decIndent();
         $this->oBeaut->addNewLineIndent();
         $this->oBeaut->add($sTag . ' ');
         //$this->oBeaut->incIndent();
-        
+
     }
     /**
-     * t_parenthesis_open 
-     * 
+     * t_parenthesis_open
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_parenthesis_open($sTag) 
+    function t_parenthesis_open($sTag)
     {
         $this->oBeaut->add($sTag);
     }
     /**
-     * t_parenthesis_close 
-     * 
+     * t_parenthesis_close
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_parenthesis_close($sTag) 
+    function t_parenthesis_close($sTag)
     {
         if (!$this->oBeaut->isPreviousTokenConstant(T_COMMENT) and !$this->oBeaut->isPreviousTokenConstant(T_END_HEREDOC)) {
             $this->oBeaut->removeWhitespace();
@@ -210,17 +210,17 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         if (!$this->oBeaut->isNextTokenContent(';')) {
             $this->oBeaut->add(' ');
         }
-        
+
     }
     /**
-     * t_open_brace 
-     * 
+     * t_open_brace
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_open_brace($sTag) 
+    function t_open_brace($sTag)
     {
         if ($this->oBeaut->openBraceDontProcess()) {
             $this->oBeaut->add($sTag);
@@ -237,16 +237,16 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
             $this->oBeaut->addNewLineIndent();
         }
     }
-   
+
     /**
-     * t_close_brace 
-     * 
+     * t_close_brace
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_close_brace($sTag) 
+    function t_close_brace($sTag)
     {
         if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
             $this->oBeaut->add($sTag);
@@ -267,14 +267,14 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_semi_colon 
-     * 
+     * t_semi_colon
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_semi_colon($sTag) 
+    function t_semi_colon($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add($sTag);
@@ -283,39 +283,39 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_as 
-     * 
+     * t_as
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_as($sTag) 
+    function t_as($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_new 
-     * 
+     * t_new
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_new($sTag) 
+    function t_new($sTag)
     {
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_whitespace 
-     * 
+     * t_whitespace
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_whitespace($sTag) 
+    function t_whitespace($sTag)
     {
         $matches = "";
         $minNL = 2;
@@ -336,14 +336,14 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_doc_comment 
-     * 
+     * t_doc_comment
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_doc_comment($sTag) 
+    function t_doc_comment($sTag)
     {
         $this->oBeaut->removeWhiteSpace();
         $this->oBeaut->addNewLineIndent();
@@ -369,14 +369,14 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_comment 
-     * 
+     * t_comment
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_comment($sTag) 
+    function t_comment($sTag)
     {
         if ($this->oBeaut->removeWhitespace()) {
             if (preg_match("/\r|\n/", $this->oBeaut->getPreviousWhitespace())) {
@@ -392,27 +392,27 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * comment_short 
-     * 
+     * comment_short
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function comment_short($sTag) 
+    function comment_short($sTag)
     {
         $this->oBeaut->add(trim($sTag));
         $this->oBeaut->addNewLineIndent();
     }
     /**
-     * comment_large 
-     * 
+     * comment_large
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function comment_large($sTag) 
+    function comment_large($sTag)
     {
         if ($sTag == '/*{{{*/' or $sTag == '/*}}}*/') { // folding markers
             $this->oBeaut->add(' ' . $sTag);
@@ -454,11 +454,11 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
      * @access public
      * @return void
      */
-    function t_else($sTag) 
+    function t_else($sTag)
     {
         if ($this->oBeaut->isPreviousTokenConstant(T_COMMENT)) {
             // do nothing!
-            
+
         } elseif ($this->oBeaut->isPreviousTokenContent('}')) {
             $this->oBeaut->removeWhitespace();
             $this->oBeaut->add(' ');
@@ -474,11 +474,11 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
 
     /**
      * _detectColonAfterParenthesis Detect structure elseif($something):
-     * 
+     *
      * @access private
      * @return void
      */
-    private function _detectColonAfterParenthesis() 
+    private function _detectColonAfterParenthesis()
     {
         $iPar = 1;
         $x = 2;
@@ -496,126 +496,126 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         return $this->oBeaut->isNextTokenContent(':', $x);
     }
     /**
-     * t_equal 
-     * 
+     * t_equal
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_equal($sTag) 
+    function t_equal($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_logical 
-     * 
+     * t_logical
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_logical($sTag) 
+    function t_logical($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_foreach 
-     * 
+     * t_foreach
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_foreach($sTag) 
+    function t_foreach($sTag)
     {
         $this->oBeaut->add($sTag . ' ');
     }
     /**
-     * t_for 
-     * 
+     * t_for
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_for($sTag) 
+    function t_for($sTag)
     {
         $this->oBeaut->add($sTag . ' ');
     }
     /**
-     * t_comma 
-     * 
+     * t_comma
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_comma($sTag) 
+    function t_comma($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add($sTag . ' ');
     }
     /**
-     * t_dot 
-     * 
+     * t_dot
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_dot($sTag) 
+    function t_dot($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_include 
-     * 
+     * t_include
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_include($sTag) 
+    function t_include($sTag)
     {
         $this->oBeaut->add($sTag . ' ');
     }
     /**
-     * t_language_construct 
-     * 
+     * t_language_construct
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_language_construct($sTag) 
+    function t_language_construct($sTag)
     {
         $this->oBeaut->add($sTag . ' ');
     }
     /**
-     * t_constant_encapsed_string 
-     * 
+     * t_constant_encapsed_string
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_constant_encapsed_string($sTag) 
+    function t_constant_encapsed_string($sTag)
     {
         $this->oBeaut->add($sTag);
     }
     /**
-     * t_variable 
-     * 
+     * t_variable
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_variable($sTag) 
+    function t_variable($sTag)
     {
         if ($this->oBeaut->isPreviousTokenConstant(T_STRING) and !$this->oBeaut->getMode("double_quote")) {
             $this->oBeaut->add(' ');
@@ -623,27 +623,27 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         $this->oBeaut->add($sTag);
     }
     /**
-     * t_question 
-     * 
+     * t_question
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_question($sTag) 
+    function t_question($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_colon 
-     * 
+     * t_colon
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_colon($sTag) 
+    function t_colon($sTag)
     {
         $this->oBeaut->removeWhitespace();
         if ($this->oBeaut->getMode('ternary_operator')) {
@@ -655,26 +655,26 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_double_colon 
-     * 
+     * t_double_colon
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_double_colon($sTag) 
+    function t_double_colon($sTag)
     {
         $this->oBeaut->add($sTag);
     }
     /**
-     * t_break 
-     * 
+     * t_break
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_break($sTag) 
+    function t_break($sTag)
     {
         if ($this->oBeaut->getControlSeq() == T_SWITCH) {
             $this->oBeaut->removeWhitespace();
@@ -690,14 +690,14 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_continue 
-     * 
+     * t_continue
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_continue($sTag) 
+    function t_continue($sTag)
     {
         $this->oBeaut->add($sTag);
         if ($this->oBeaut->isNextTokenConstant(T_LNUMBER)) {
@@ -705,26 +705,26 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_default 
-     * 
+     * t_default
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_default($sTag) 
+    function t_default($sTag)
     {
         $this->t_case($sTag);
     }
     /**
-     * t_end_suffix 
-     * 
+     * t_end_suffix
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_end_suffix($sTag) 
+    function t_end_suffix($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->decIndent();
@@ -732,86 +732,86 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         $this->oBeaut->add($sTag);
     }
     /**
-     * t_extends 
-     * 
+     * t_extends
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_extends($sTag) 
+    function t_extends($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_implements 
-     * 
+     * t_implements
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_implements($sTag) 
+    function t_implements($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_instanceof 
-     * 
+     * t_instanceof
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_instanceof($sTag) 
+    function t_instanceof($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_equal_sign 
-     * 
+     * t_equal_sign
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_equal_sign($sTag) 
+    function t_equal_sign($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_assigment 
-     * 
+     * t_assigment
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_assigment($sTag) 
+    function t_assigment($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add(' ' . $sTag . ' ');
     }
     /**
-     * t_assigment_pre 
-     * 
+     * t_assigment_pre
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_assigment_pre($sTag) 
+    function t_assigment_pre($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add($sTag . ' ');
     }
     /**
-     * t_clone 
-     * 
+     * t_clone
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
@@ -822,14 +822,14 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         $this->oBeaut->add($sTag.' ');
     }
     /**
-     * t_array 
-     * 
+     * t_array
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_array($sTag) 
+    function t_array($sTag)
     {
         $this->oBeaut->add($sTag);
         // Check this, please!
@@ -838,21 +838,21 @@ final class PHP_Beautifier_Filter_Default extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_object_operator 
-     * 
+     * t_object_operator
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_object_operator($sTag) 
+    function t_object_operator($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->add($sTag);
     }
     /**
-     * t_operator 
-     * 
+     * t_operator
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public

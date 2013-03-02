@@ -42,10 +42,10 @@ require_once 'PEAR/Config.php';
  * $oBeaut->addFilter('Pear',array('add_header'=>'php'));
  * </code>
  * Two extra options allows to break the spec about newline before braces
- * on function and classes. By default, they are set to true. Use 
+ * on function and classes. By default, they are set to true. Use
  * <code>
  * $oBeaut->addFilter('Pear',array('newline_class'=>false, 'newline_function'=>false));
- * </code> 
+ * </code>
  *
  * @category   PHP
  * @package    PHP_Beautifier
@@ -64,26 +64,26 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
     protected $sDescription = 'Filter the code to make it compatible with PEAR Coding Specs';
     private $_bOpenTag = false;
     /**
-     * t_open_tag_with_echo 
-     * 
+     * t_open_tag_with_echo
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_open_tag_with_echo($sTag) 
+    function t_open_tag_with_echo($sTag)
     {
         $this->oBeaut->add("<?php echo ");
     }
     /**
-     * t_close_brace 
-     * 
+     * t_close_brace
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_close_brace($sTag) 
+    function t_close_brace($sTag)
     {
         if ($this->oBeaut->getMode('string_index') or $this->oBeaut->getMode('double_quote')) {
             $this->oBeaut->add($sTag);
@@ -93,20 +93,20 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
             $this->oBeaut->decIndent();
             $this->oBeaut->addNewLineIndent();
             $this->oBeaut->add($sTag);
-            $this->oBeaut->addNewLineIndent();            
+            $this->oBeaut->addNewLineIndent();
         } else {
             return PHP_Beautifier_Filter::BYPASS;
         }
     }
     /**
-     * t_semi_colon 
-     * 
+     * t_semi_colon
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_semi_colon($sTag) 
+    function t_semi_colon($sTag)
     {
         // A break statement and the next statement are separated by an empty line
         if ($this->oBeaut->isPreviousTokenConstant(T_BREAK)) {
@@ -118,20 +118,20 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
             // The three terms in the head of a for loop are separated by the string "; "
             $this->oBeaut->removeWhitespace();
             $this->oBeaut->add($sTag . " "); // Bug 8327
-            
+
         } else {
             return PHP_Beautifier_Filter::BYPASS;
         }
     }
     /**
-     * t_case 
-     * 
+     * t_case
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_case($sTag) 
+    function t_case($sTag)
     {
         $this->oBeaut->removeWhitespace();
         $this->oBeaut->decIndent();
@@ -141,50 +141,50 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
         $this->oBeaut->addNewLineIndent();
         $this->oBeaut->add($sTag . ' ');
         //$this->oBeaut->incIndent();
-        
+
     }
     /**
-     * t_default 
-     * 
+     * t_default
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_default($sTag) 
+    function t_default($sTag)
     {
         $this->t_case($sTag);
     }
     /**
-     * t_break 
-     * 
+     * t_break
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_break($sTag) 
+    function t_break($sTag)
     {
         $this->oBeaut->add($sTag);
         if ($this->oBeaut->isNextTokenConstant(T_LNUMBER)) {
             $this->oBeaut->add(" ");
-        }        
+        }
     }
     /**
-     * t_open_brace 
-     * 
+     * t_open_brace
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_open_brace($sTag) 
+    function t_open_brace($sTag)
     {
         if ($this->oBeaut->openBraceDontProcess()) {
             $this->oBeaut->add($sTag);
         } elseif ($this->oBeaut->getControlSeq() == T_SWITCH and $this->getSetting('switch_without_indent')) {
             $this->oBeaut->add($sTag);
-            $this->oBeaut->incIndent();    
+            $this->oBeaut->incIndent();
         } else {
             $bypass = true;
             if ($this->oBeaut->getControlSeq() == T_CLASS and $this->getSetting('newline_class')) {
@@ -204,14 +204,14 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
         }
     }
     /**
-     * t_comment 
-     * 
+     * t_comment
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_comment($sTag) 
+    function t_comment($sTag)
     {
         if ($sTag{0} != '#') {
             return PHP_Beautifier_Filter::BYPASS;
@@ -221,14 +221,14 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
         return $oFilterDefault->t_comment($sTag);
     }
     /**
-     * t_open_tag 
-     * 
+     * t_open_tag
+     *
      * @param mixed $sTag The tag to be processed
      *
      * @access public
      * @return void
      */
-    function t_open_tag($sTag) 
+    function t_open_tag($sTag)
     {
         // find PEAR header comment
         $this->oBeaut->add("<?php");
@@ -248,22 +248,22 @@ class PHP_Beautifier_Filter_Pear extends PHP_Beautifier_Filter
         }
     }
     /**
-     * preProcess 
-     * 
+     * preProcess
+     *
      * @access public
      * @return void
      */
-    function preProcess() 
+    function preProcess()
     {
         $this->_bOpenTag = false;
     }
     /**
-     * addHeaderComment 
-     * 
+     * addHeaderComment
+     *
      * @access public
      * @return void
      */
-    function addHeaderComment() 
+    function addHeaderComment()
     {
         if (!($sLicense = $this->getSetting('add_header'))) {
             return;
