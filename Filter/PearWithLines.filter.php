@@ -1,5 +1,4 @@
 <?php
-
 require_once 'PHP/Beautifier/Filter/Pear.filter.php';
 class PHP_Beautifier_Filter_PearWithLines extends PHP_Beautifier_Filter_Pear
 {
