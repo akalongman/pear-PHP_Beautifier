@@ -15,6 +15,6 @@ Getting and installing PHP - http://www.php.net/manual/en/install.general.php
 
 Getting and installing the PEAR package manager - http://pear.php.net/manual/en/installation.getting.php
 
-Install standart PEAR [Php_beautifier] (http://pear.php.net/package/PHP_Beautifier)
+Install standard PEAR [Php_beautifier] (http://pear.php.net/package/PHP_Beautifier)
 
 After this replace files and folders in installed Beautifier folder from this repository.
